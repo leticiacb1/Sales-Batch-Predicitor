@@ -1,29 +1,39 @@
-### 🤖 Your Machine Learning Ops Template
+### 🤖 Sales Batch Prediction Model 
 
-Write a description of what the project is about here.
+![svg](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) ![svg](https://img.shields.io/badge/dbeaver-382923?style=for-the-badge&logo=dbeaver&logoColor=white)
 
-#### 📌️ How to use this project
+Using batch prediciton method to predict total sales of a store.
 
-Clone the project :
+
+#### 📌️ First Steps
+
+1. Clone the project
 
 ```
     git clone <this-project-github-link>
 ```
+<br>
 
-Create a enviroment :
+2. Create a enviroment
 
 ```bash
     python3 -m venv venv
     source venv/bin/activate
 ```
+<br>
 
-Install dependencies :
+3. Install dependencies 
 
 ```bash
     pip install -r requirements.txt
 ```
+<br>
 
-Create a `.env` file in the `config` folder with database conection information: 
+4. Install a open-source database administration 
+[Install DBeaver](https://dbeaver.io/download/)
+<br>
+
+5. Create a `.env` file in the `config` folder with database conection information: 
 
 ```bash
     DB_USER="my_user"
@@ -32,6 +42,25 @@ Create a `.env` file in the `config` folder with database conection information:
     DB_PORT="my_connection_port"
     DB_DATABASE="my_database_name"
 ```
+
+#### 🎯 How to run the project
+
+In root folder execute the commands:
+
+```bash
+# Train model
+python -m src.train.py
+```
+
+```bash
+# Predict model
+python -m src.predict.py
+```
+
+To change model configuration, access the files:
+
+* `src/variables/train.py` : change train configuration.
+* `src/variables/preditcion.py` : change prediction configuration.
 
 
 #### 📂️ Folders
