@@ -1,6 +1,6 @@
 WITH vars AS (
     -- Create variables
-    SELECT INTERVAL :delta_year year AS year_interval, INTERVAL :end_day day AS day_interval  
+     SELECT INTERVAL :delta_year AS year_interval, INTERVAL :end_day AS day_interval   
 ),
 processed_item_sales AS (
     select

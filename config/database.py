@@ -1,5 +1,5 @@
 import psycopg2
-from .environment import EnvironmentVariables
+from config.environment import EnvironmentVariables
 
 class ConfigureDatabase():
 
@@ -12,13 +12,6 @@ class ConfigureDatabase():
         self.env.get()
 
     def get_connection(self) -> psycopg2.extensions.connection:
-
-        print(self.env.DATABASE)
-        print(self.env.USERNAME)
-        print(self.env.PASSWORD)
-        print(self.env.HOST)
-        print(self.env.PORT)
-
         self.connection = psycopg2.connect(
             database=self.env.DATABASE, 
             user=self.env.USERNAME,
@@ -33,7 +26,8 @@ class ConfigureDatabase():
         self.cursor = self.connection.cursor()
         return self.cursor
 
-    def close_connection(self) -> None:
+    def close(self) -> None:
+        self.cursor.close()
         self.connection.close()
 
 
@@ -43,4 +37,4 @@ if __name__ == "__main__":
     configure_database.get_environment_variables()
     configure_database.get_connection()
     configure_database.get_cursor()
-    close_connection()
+    configure_database.close()

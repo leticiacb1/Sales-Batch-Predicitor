@@ -14,13 +14,13 @@ from typing import Tuple
 # Model
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
-from ..variables import n_estimators, model_random_state
+from src.variables.train import model_n_estimators, model_random_state
 
 class ModelTrainer():
 
     def __init__(self, df):
         self._df = df
-        self.model = RandomForestRegressor(n_estimators=n_estimators, random_state=model_random_state)
+        self.model = RandomForestRegressor(n_estimators=model_n_estimators, random_state=model_random_state)
 
         self.one_hot_enc = None
 

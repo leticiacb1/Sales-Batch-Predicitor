@@ -45,16 +45,18 @@ Using batch prediciton method to predict total sales of a store.
 
 #### 🎯 How to run the project
 
-In root folder execute the commands:
+1. Create a connection to the database locally ( In **DBeaver**, click [here](https://dbeaver.com/docs/dbeaver/Create-Connection/)).
+
+2. At the root of the project execute the commands:
 
 ```bash
 # Train model
-python -m src.train.py
+python -m src.train
 ```
 
 ```bash
 # Predict model
-python -m src.predict.py
+python -m src.predict
 ```
 
 To change model configuration, access the files:
@@ -65,10 +67,10 @@ To change model configuration, access the files:
 
 #### 📂️ Folders
 
-* `config/` : Project configuration.
+* `config/` : Project configuration. Enviroment and Database configuration.
 <br>
 
-* `data/` : Content all the data used or created by this project.
+* `data/` :  Scripts that will run in SQL database and return data need in the project.
 <br>
 
 * `models/` : Models created by this project.

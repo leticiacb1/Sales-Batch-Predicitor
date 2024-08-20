@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 class EnvironmentVariables():
 
     def __init__(self) -> None:
-        self.dotenv_path = '.env'
+        self.dotenv_path = join(dirname(abspath(__file__)), '.env')
         
         self.HOST = None
         self.PORT = None
