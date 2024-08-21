@@ -26,6 +26,7 @@ def train_pipeline() -> None:
         CREATE_SQL = f.read()
         CREATE_SQL = CREATE_SQL.replace(':delta_year', '%s').replace(':delta_day', '%s')
     cursor.execute(CREATE_SQL, (train_delta_year, train_delta_day)) 
+    connection.commit()
 
     with open(os.path.join(DATA_DIR, select_sql_script), 'r') as f:
         SELECT_SQL = f.read()
