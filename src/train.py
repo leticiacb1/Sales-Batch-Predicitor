@@ -52,8 +52,8 @@ def train_pipeline() -> None:
     trainer.save_model(model_file_path)
 
     # Close database connection
+    print("\n    [INFO] Closing database connection ...")
     configure_database.close()
-
 
 if __name__ == "__main__":
     train_pipeline()
