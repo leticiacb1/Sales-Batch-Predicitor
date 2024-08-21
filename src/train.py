@@ -5,7 +5,7 @@ import os
 from config.database import ConfigureDatabase
 
 from .engine.trainer import ModelTrainer
-from .variables.train import train_sql_script, train_delta_year, train_delta_day, model_path
+from .variables.train import create_sql_script, select_sql_script, train_delta_year, train_delta_day, model_path
 
 from . import DATA_DIR
 from . import MODELS_DIR
@@ -19,14 +19,18 @@ def train_pipeline() -> None:
     connection = configure_database.get_connection()
     cursor = configure_database.get_cursor()
 
-    # Take arguments from console
-    print("\n    [INFO] Reading processed data from SQL ...")
+    # Execute SQL Script
+    print(f"\n    [INFO] Reading processed data from SQL on {create_sql_script} and {select_sql_script} ...")
 
-    with open(os.path.join(DATA_DIR, 'train.sql'), 'r') as f:
-        TRAIN_SQL = f.read()
-        TRAIN_SQL = TRAIN_SQL.replace(':delta_year', '%s').replace(':end_day', '%s')
+    with open(os.path.join(DATA_DIR, create_sql_script), 'r') as f:
+        CREATE_SQL = f.read()
+        CREATE_SQL = CREATE_SQL.replace(':delta_year', '%s').replace(':delta_day', '%s')
+    cursor.execute(CREATE_SQL, (train_delta_year, train_delta_day)) 
 
-    cursor.execute(TRAIN_SQL, (str(train_delta_year) + ' year', str(train_delta_day) + ' day'))  
+    with open(os.path.join(DATA_DIR, select_sql_script), 'r') as f:
+        SELECT_SQL = f.read()
+    cursor.execute(SELECT_SQL)
+    
     df = pd.DataFrame(cursor.fetchall(), columns=[desc[0] for desc in cursor.description])
 
     # Instantiate a model trainer
