@@ -4,7 +4,7 @@ WITH generate_date_sales AS (
   SELECT 
     CURRENT_DATE + i AS date_sale
   FROM 
-    generate_series(0, :num_days - 1) AS gs (i)                            -- How many days in the future
+    generate_series(0, :num_days -1 ) AS gs (i)                            -- How many days in the future
 ), store_ids AS (
   SELECT 
     :start_id + gs.i AS store_id

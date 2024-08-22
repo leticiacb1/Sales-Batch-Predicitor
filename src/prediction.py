@@ -7,6 +7,8 @@ from config.database import ConfigureDatabase
 from .engine.predictor import ModelPredictor
 from .variables.prediction import create_sql_script, generate_sql_script, proccess__sql_script , start_store_id, end_store_id, days_in_future, update__sql_script, model_path
 
+from tqdm import tqdm
+
 from . import DATA_DIR
 from . import MODELS_DIR
 
@@ -46,7 +48,7 @@ def predict_pipeline():
 
     cursor.execute(PROCCESS_SQL)
     df = pd.DataFrame(cursor.fetchall(), columns=[desc[0] for desc in cursor.description])
-
+    
     # Instantiate processor
     print("\n    [INFO] Creating ModelPredictor() ...")
     predictor = ModelPredictor()
@@ -57,27 +59,31 @@ def predict_pipeline():
 
     # Make prediction
     print("\n    [INFO] Make prediction ...")
-    predictor.predict(X_test = df.drop('date_sale', axis=1))
+    _df = df.drop('date_sale', axis=1)
+
+    # print(f" INPUT DATAFRAME: \n ")
+    # print(_df)
+    predictor.predict(X_test = _df)
     Y_prediction = predictor.get_y_prediction()
     df['total_sales'] = Y_prediction
 
     # Update table with predictions
-    print("\n    [INFO] Update table with prediction ...")
+    print("\n    [INFO] Update table with prediction ...\n")
     with open(os.path.join(DATA_DIR, update__sql_script), 'r') as f:
         UPDATE_SQL = f.read()
+        UPDATE_SQL = UPDATE_SQL.replace(":predict_value", "%s").replace(":store_id", "%s").replace(":date",  "%s")
        
     updated_df = list(df.drop(["year", "month", "day", "weekday"], axis=1).itertuples(index=False, name=None))
-    for row in updated_df:
+    for row in tqdm(updated_df, desc="    Progress"):
         _store_id = str(row[0])
         _date = row[1].strftime('%Y-%m-%d')
         updated_total_sales = str(row[2])
-
-        UPDATE_SQL = UPDATE_SQL.replace(":predict_value", updated_total_sales).replace(":store_id", _store_id).replace(":date",  "'" + _date + "'")
-        cursor.execute(UPDATE_SQL)
+    
+        cursor.execute(UPDATE_SQL, (updated_total_sales, _store_id, "'" + _date + "'"))
         connection.commit()
 
     # Close database connection
-    print("\n    [INFO] Closing database connection ...")
+    print("\n    [INFO] Closing database connection ...\n")
     configure_database.close()
 
 if __name__ == "__main__":

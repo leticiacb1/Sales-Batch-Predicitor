@@ -33,7 +33,8 @@ def train_pipeline() -> None:
     cursor.execute(SELECT_SQL)
     
     df = pd.DataFrame(cursor.fetchall(), columns=[desc[0] for desc in cursor.description])
-
+    # print(df)
+    
     # Instantiate a model trainer
     print("\n    [INFO] Creating ModelTrainer() ...")
     trainer = ModelTrainer(df)
@@ -42,17 +43,19 @@ def train_pipeline() -> None:
     print("\n    [INFO] Prepare data for training ...")
     trainer.prepare_data()
 
+    # trainer.show_info()
+
     # Train the model
     print("\n    [INFO] Start training ...")
     trainer.train_model()
 
     # Saving model
     model_file_path = str(MODELS_DIR) + '/' + model_path
-    print(f"\n    [INFO] Saving model in {model_file_path} ... \n")
+    print(f"\n    [INFO] Saving model in {model_file_path} ...")
     trainer.save_model(model_file_path)
 
     # Close database connection
-    print("\n    [INFO] Closing database connection ...")
+    print("\n    [INFO] Closing database connection ...\n")
     configure_database.close()
 
 if __name__ == "__main__":
