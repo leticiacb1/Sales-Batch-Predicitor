@@ -33,7 +33,6 @@ def train_pipeline() -> None:
     cursor.execute(SELECT_SQL)
     
     df = pd.DataFrame(cursor.fetchall(), columns=[desc[0] for desc in cursor.description])
-    # print(df)
     
     # Instantiate a model trainer
     print("\n    [INFO] Creating ModelTrainer() ...")
@@ -42,8 +41,6 @@ def train_pipeline() -> None:
     # Prepare data for training
     print("\n    [INFO] Prepare data for training ...")
     trainer.prepare_data()
-
-    # trainer.show_info()
 
     # Train the model
     print("\n    [INFO] Start training ...")

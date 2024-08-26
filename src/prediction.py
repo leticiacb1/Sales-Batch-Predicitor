@@ -60,9 +60,6 @@ def predict_pipeline():
     # Make prediction
     print("\n    [INFO] Make prediction ...")
     _df = df.drop('date_sale', axis=1)
-
-    # print(f" INPUT DATAFRAME: \n ")
-    # print(_df)
     predictor.predict(X_test = _df)
     Y_prediction = predictor.get_y_prediction()
     df['total_sales'] = Y_prediction

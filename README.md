@@ -64,6 +64,11 @@ To change model configuration, access the files:
 * `src/variables/train.py` : change train configuration.
 * `src/variables/preditcion.py` : change prediction configuration.
 
+To format file : 
+
+```bash
+    black --line-length=120  file.py
+```
 
 #### 📂️ Folders
 

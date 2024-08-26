@@ -49,6 +49,10 @@ class ModelTrainer():
         """
             Spli data for training
         """
+
+        if self._df.empty:
+            raise ValueError("\n    [ERROR] Dataframe is empty ...")
+    
         X = self._df.drop(target_column_name, axis=1)
         y = self._df[target_column_name]
 
